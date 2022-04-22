@@ -1,3 +1,1 @@
-1. masuk ke directory project
-2. npm install
-3. npm start
+Ini adalah Challange-05 Pada Chapter-05 Studi Independent Saya Di Kampus Merdeka x Binar Academy FEJS-02
