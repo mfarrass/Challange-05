@@ -12,11 +12,18 @@ import IconPeople from "../../Assets/fi_users.svg"
 import IconGear from "../../Assets/fi_settings.svg"
 import IconCalendar from "../../Assets/fi_calendar.svg"
 import Arrow from "../../Assets/fi_arrow-left.svg"
+import { useDispatch, useSelector } from 'react-redux'
+import carCartSlice from '../../store/carCartSlice'
 
 const Car = (props) => {
 
     const param = useParams()
     const [car, setCar] = useState(null)
+
+    const carCart = useSelector((store) => store.carCartSlice.carCart);
+    const dispatch = useDispatch();
+    console.log(carCart);
+    
 
     useEffect(() => {
         fetch(`https://625d73e74c36c753577540cb.mockapi.io/fejs2/api/c5-cars/${param.id}`)
@@ -131,9 +138,21 @@ const Car = (props) => {
                                             Rp. {car.price}
                                         </div>
                                     </div>
-                                    <button className='btn button-right-details-container'>
+                                    <button className='btn button-right-details-container'
+                                    disabled={carCart.some((element) => element === car.id)}
+                                    onClick={() =>
+                                        // memanggil fungsi di file store menggunakan dispatch 
+                                    dispatch(
+                                        // payload diredux / parameter dari file store.js
+                                        // id = nilainya diambil dari API
+                                        carCartSlice.actions.addCarToCart({ id: car.id })
+                                    )}>
                                         <div type="submit" className='button-right-details'>
-                                            Pilih mobil
+                                            {/* some akan menghasilkan return */}
+                                            {carCart.some((element) => element === car.id)
+                                        //    return nya ini jika true dan jika false
+                                            ? "Lanjutkan Pembayaran"
+                                            : "Pilih Mobil"}
                                         </div>
                                     </button>
                                 </div>
@@ -141,10 +160,22 @@ const Car = (props) => {
                         </div>
                     </div>
                     <div className='button-center-container-outer'>
-                        <button className='btn button-center-container'>
-                            <div type="submit" className='button-center'>
-                                Pilih mobil
-                            </div>
+                        <button className='btn button-center-container'
+                        disabled={carCart.some((element) => element === car.id)}
+                                    onClick={() =>
+                                        // memanggil fungsi di file store menggunakan dispatch 
+                                    dispatch(
+                                        // payload diredux / parameter dari file store.js
+                                        // id = nilainya diambil dari API
+                                        carCartSlice.actions.addCarToCart({ id: car.id })
+                                    )}>
+                                    <div type="submit" className='button-center'>
+                                            {/* some akan menghasilkan return */}
+                                            {carCart.some((element) => element === car.id)
+                                        //    return nya ini jika true dan jika false
+                                            ? "Lanjutkan Pembayaran"
+                                            : "Pilih Mobil"}
+                                    </div>
                         </button>
                     </div>
                 </>
